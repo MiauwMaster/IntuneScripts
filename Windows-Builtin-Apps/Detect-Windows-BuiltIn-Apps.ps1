@@ -16,7 +16,6 @@ begin {
     $appxPackageList = @(
         "MicrosoftCorporationII.QuickAssist"
     )
-    
     function Test-InstalledAppxPackages() {
         foreach ($app in $appxPackageList) {
             try {
