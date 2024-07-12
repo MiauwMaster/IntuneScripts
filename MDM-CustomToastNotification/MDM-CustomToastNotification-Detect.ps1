@@ -84,12 +84,12 @@ process{
     elseif ($currentBuild -eq "22621" -or 
                 $currentBuild -eq "22000") {
        Write-Output "Current build is Windows 11"
-      $advice = $Advice + "`nPlease install this update at your conveniance"
+      $advice = $Advice + "`nPlease install this update at your convenience"
       $showToast = $true
     }
     elseif ($currentBuild -eq "19045") {
         Write-Output "Current build is Windows 10"
-        $advice = $Advice + "`nThis is an update to Windows 11, this might take a while. Please install this update at your conveniance. `nDon't forget to plug in your charger. Check your email for more information"
+        $advice = $Advice + "`nThis is an update to Windows 11 and might take a while. Please install this update at your convenience. `n`nCheck your email for more information"
         $showToast = $true
     }
 
