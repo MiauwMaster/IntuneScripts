@@ -61,16 +61,17 @@ begin{
         }
         catch {}
     }
-}
-
-process{
-    Set-StrictMode -Version 3.0
 
     $Title = "Update to Windows 11 23H2"
     $Advice = "An update for your device is ready. "
     $Text_AppName = "University of Groningen - System information"
 
     $showToast = $false
+    $toastExpirationTime = 30 #minutes
+}
+
+process{
+    Set-StrictMode -Version 3.0
 
     $currentBuild = [Environment]::OSVersion.Version.Build
     if ($null -eq $currentBuild){
@@ -96,7 +97,7 @@ process{
 
     $Scenario = 'reminder' 
 
-    [xml]$Toast = @"
+    [xml]$splat = @"
 <toast scenario="$Scenario">
     <visual>
     <binding template="ToastGeneric">
@@ -124,14 +125,16 @@ process{
     [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-null
     [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
     $ToastXml = New-Object -TypeName Windows.Data.Xml.Dom.XmlDocument
-    $ToastXml.LoadXml($Toast.OuterXml)
+    $ToastXml.LoadXml($splat.OuterXml)
 
+    $toast = [Windows.UI.Notifications.ToastNotification]::new($ToastXml)
+    $toast.ExpirationTime = [DateTimeOffset]::Now.AddMinutes($toastExpirationTime)
 }
 
 end{
     if($showToast){
         Write-Output "Current build is $currentBuild, Showing Toast."
-        [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($AppID).Show($ToastXml)
+        [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($AppID).Show($toast)
         exit 1
     }
 }
