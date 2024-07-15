@@ -63,8 +63,7 @@ begin{
         catch {}
     }
 
-    Function Format_Size
-        {
+    Function Format_Size{
             param(
             $size	
             )	
@@ -87,6 +86,7 @@ process{
     #####
     # SET SIZE LIMIT HERE
     $RecycleBin_Limit = "5368709120" #5GB in bytes
+    $toastExpirationTime = 30 #minutes
     #####
 
     $Recycle_Bin_Size = (Get-ChildItem -LiteralPath 'C:\$Recycle.Bin' -File -Force -Recurse -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum).Sum
@@ -98,7 +98,7 @@ process{
 
     $Scenario = 'reminder' 
 
-    [xml]$Toast = @"
+    [xml]$splat = @"
 <toast scenario="$Scenario">
     <visual>
     <binding template="ToastGeneric">
@@ -126,12 +126,15 @@ process{
     [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-null
     [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
     $ToastXml = New-Object -TypeName Windows.Data.Xml.Dom.XmlDocument
-    $ToastXml.LoadXml($Toast.OuterXml)	
+    $ToastXml.LoadXml($splat.OuterXml)	
+
+    $toast = [Windows.UI.Notifications.ToastNotification]::new($ToastXml)
+    $toast.ExpirationTime = [DateTimeOffset]::Now.AddMinutes($toastExpirationTime)
 }
 
 end{
     if($Recycle_Bin_Size -gt $RecycleBin_Limit) {
-        [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($AppID).Show($ToastXml)
+        [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($AppID).Show($toast)
         Write-Output "Bin size is: $RecycleBin_formatedSize"
         exit 1
     }
