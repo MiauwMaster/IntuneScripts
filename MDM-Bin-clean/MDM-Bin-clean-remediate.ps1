@@ -71,7 +71,7 @@ begin{
 		$Main_Reg_Path = "HKCU:\SOFTWARE\Classes\$Action_Name"
 		$Command_Path = "$Main_Reg_Path\shell\open\command"
 		$CMD_Script = "C:\Windows\Temp\$Action_Name.cmd"
-		New-Item $Command_Path -Force
+		New-Item $Command_Path -Force | Out-Null
 		New-ItemProperty -Path $Main_Reg_Path -Name "URL Protocol" -Value "" -PropertyType String -Force | Out-Null
 		Set-ItemProperty -Path $Main_Reg_Path -Name "(Default)" -Value "URL:$Action_Name Protocol" -Force | Out-Null
 		Set-ItemProperty -Path $Command_Path -Name "(Default)" -Value $CMD_Script -Force | Out-Null		
