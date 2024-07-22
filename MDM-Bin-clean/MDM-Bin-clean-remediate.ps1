@@ -106,13 +106,15 @@ process{
 
     $OpenRecycleBin_Script = 
 @'
+@echo off
 start shell:RecycleBinFolder
 '@
     
 
     $ClearRecycleBin_Script = 
 @'
-powershell -command Clear-RecycleBin -confirm:$false -force
+@echo off
+powershell -WindowStyle hidden -command Clear-RecycleBin -confirm:$false -force
 '@
 
     $OpenRecycleBin_Script | out-file "$Script_Export_Path\OpenRecycleBin.cmd" -Force -Encoding ASCII
