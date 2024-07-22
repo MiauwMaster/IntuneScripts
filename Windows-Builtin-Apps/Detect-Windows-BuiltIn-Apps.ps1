@@ -15,6 +15,7 @@ begin {
     Set-StrictMode -Version 3
     $appxPackageList = @(
         "MicrosoftCorporationII.QuickAssist"
+        "Microsoft.MicrosoftOfficeHub"
     )
     function Test-InstalledAppxPackages() {
         foreach ($app in $appxPackageList) {
