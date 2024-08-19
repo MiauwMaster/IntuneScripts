@@ -114,17 +114,17 @@ start shell:RecycleBinFolder
     $ClearRecycleBin_Script = 
 @'
 @echo off
-powershell -WindowStyle hidden -command Clear-RecycleBin -confirm:$false -force
+cmd /c start /min "" powershell -WindowStyle hidden -command Clear-RecycleBin -confirm:$false -force
 '@
 
-    $OpenRecycleBin_Script | out-file "$Script_Export_Path\OpenRecycleBin.cmd" -Force -Encoding ASCII
-    Set_Action -Action_Name OpenRecycleBin	
+    $OpenRecycleBin_Script | out-file "$Script_Export_Path\xu0rt0c0bhn9mylgs2zw.cmd" -Force -Encoding ASCII
+    Set_Action -Action_Name xu0rt0c0bhn9mylgs2zw	
     
-    $ClearRecycleBin_Script | out-file "$Script_Export_Path\ClearRecycleBin.cmd" -Force -Encoding ASCII
-    Set_Action -Action_Name ClearRecycleBin		
+    $ClearRecycleBin_Script | out-file "$Script_Export_Path\2za2cmvtjnbkvy2xnmdw.cmd" -Force -Encoding ASCII
+    Set_Action -Action_Name 2za2cmvtjnbkvy2xnmdw		
 
-    $Action_Open = "OpenRecycleBin:"
-    $Action_Clear = "ClearRecycleBin:"
+    $Action_Open = "xu0rt0c0bhn9mylgs2zw:"
+    $Action_Clear = "2za2cmvtjnbkvy2xnmdw:"
 
     $Title = "Your recycle bin currently contains $RecycleBinSizeFormated of data"
     $Advice = "We advise you to empty your recycle bin to free up space on the harddrive of your laptop"
