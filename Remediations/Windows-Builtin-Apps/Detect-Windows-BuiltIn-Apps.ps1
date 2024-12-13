@@ -9,6 +9,9 @@
 .NOTES
     File Name      : Detect-Windows-Built-In-Apps.ps1
     Author         : Tobias Putman-Barth
+    
+.LINK
+	https://github.com/MiauwMaster/ConfigChronicles
 #>
 
 begin {

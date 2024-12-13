@@ -32,7 +32,7 @@
 	Author:           Tobias Putman-Barth
 
 .LINK
-	https://github.com/MiauwMaster/IntuneScripts
+	https://github.com/MiauwMaster/ConfigChronicles
 	
 #>
 [CmdletBinding(SupportsShouldProcess=$True, ConfirmImpact='High')]

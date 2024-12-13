@@ -9,6 +9,9 @@
 .NOTES
     File Name      : MDM-CustomToastNotification-Detect.ps1
     Author         : Tobias Putman-Barth
+    
+.LINK
+	https://github.com/MiauwMaster/ConfigChronicles
 #>
 
 
