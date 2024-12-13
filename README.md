@@ -1,7 +1,9 @@
-# IntuneScript
+# Config Chronicles
+
+This is the place I will house my collection of scripts featured in my blog
 
 ## Remediations
-Collection of Intune remediation Scripts written or modified by me.
+Collection of Intune remediation Scripts
 
 ## Scripts
-Collection of intune related scripts
+Collection of other scripts
