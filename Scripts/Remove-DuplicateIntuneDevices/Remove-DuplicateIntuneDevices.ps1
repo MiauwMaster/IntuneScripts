@@ -32,12 +32,13 @@
 	Author:           Tobias Putman-Barth
 
 .LINK
-	https://github.com/MiauwMaster/ConfigChronicles
+	https://configchronicles.com/removing-duplicate-intune-devices/
 	
 #>
 [CmdletBinding(SupportsShouldProcess=$True, ConfirmImpact='High')]
 Param()
 Begin {
+	Set-StrictMode -Version 3.0
 	Write-Host "Starting Remove-DuplicateIntuneDevices"
 	Write-Verbose "Checking if Microsoft.Graph.Intune module is installed"
 	try {
@@ -51,7 +52,8 @@ Begin {
 	Write-Verbose "Connect to Intune"
 	try{
 		Connect-MgGraph -NoWelcome -Scopes 'DeviceManagementManagedDevices.ReadWrite.All' -ErrorAction stop
-	}catch{
+	}
+	catch{
 		Write-Error "Not authenticated. Please authenticate and connect to intune with an account with sufficient privileges."
 		exit 1
 	}
@@ -64,19 +66,19 @@ Process {
 	#Place devices in groups
 	$deviceGroups = $devices | Where-Object { -not [String]::IsNullOrWhiteSpace($_.serialNumber) -and ($_.serialNumber -ne "Defaultstring")} | Group-Object -Property serialNumber
 	
-	#filter out groups with mopre than one entry
+	#filter out groups with more than one entry
 	$duplicatedDevices = $deviceGroups | Where-Object {$_.Count -gt 1 }
-	Write-Verbose "Found $($duplicatedDevices.Values.Count) devices with duplicated entries"
+	if ($null -ne $duplicatedDevices){
+		Write-Verbose "Found $($duplicatedDevices.Values.Count) devices with duplicated entries"
+		Write-Host "Processing removal of $($duplicatedDevices.Values.Count) duplicate devices"
+	}
 	
 	$DuplicatesDeleted = 0
-	Write-Host "Processing removal of $($duplicatedDevices.Values.Count) duplicate devices"
-
+	
 	foreach($duplicatedDevice in $duplicatedDevices){
-		# Find device which is the newest.
-		$newestDevice = $duplicatedDevice.Group | Sort-Object -Property lastSyncDateTime -Descending | Select-Object -First 1
+		#find devices to delete, skip the first entry of the group as that is the most recently synced device
 		$devicesToDelete = $duplicatedDevice.Group | Sort-Object -Property lastSyncDateTime -Descending | Select-Object -Skip 1
 		Write-Verbose "Selected duplicate device: $($duplicatedDevice.DeviceName)"
-		Write-Verbose "latest synced device: $($newestDevice.deviceName) $($newestDevice.lastSyncDateTime) will NOT be deleted"
 		
 		foreach($device in $devicesToDelete){
 			if($PSCmdlet.ShouldProcess("$($device.SerialNumber), $($device.LastSyncDateTime)", "Remove device from intune")){
